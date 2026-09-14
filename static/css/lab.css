@@ -1,0 +1,530 @@
+/* Circuit Lab layout & interactions */
+
+.lab-section { padding-top: 0.5rem; }
+
+.lab-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.lab-workspace {
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.lab-sidebar {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: calc(var(--header-h) + 0.75rem);
+}
+
+.lab-side-note {
+  margin: 0 0 0.85rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.lab-problem-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.lab-problem-btn {
+  width: 100%;
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: #f7faff;
+  border-radius: 12px;
+  padding: 0.7rem 0.75rem;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.lab-problem-btn:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+.lab-problem-btn.active {
+  background: var(--blue-soft);
+  border-color: var(--blue);
+}
+
+.lab-problem-btn strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+}
+
+.lab-problem-btn small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.lab-problem-num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.lab-main {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.15rem 1.2rem 1.35rem;
+  box-shadow: var(--shadow);
+}
+
+.lab-brief h2 { margin-bottom: 0.35rem; }
+.lab-hint {
+  background: var(--blue-soft);
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  color: var(--ink-soft);
+}
+
+.lab-palette-wrap h3,
+.lab-board-wrap h3 {
+  margin-top: 0.25rem;
+}
+
+.lab-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.lab-part {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px dashed var(--blue);
+  background: #f4f8ff;
+  border-radius: 12px;
+  padding: 0.55rem 0.75rem;
+  cursor: grab;
+  user-select: none;
+  font-weight: 650;
+  font-size: 0.92rem;
+}
+
+.lab-part:active { cursor: grabbing; }
+.lab-part.dragging { opacity: 0.45; }
+
+.lab-part-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--line);
+  position: relative;
+}
+
+.lab-icon-battery::before {
+  content: "";
+  position: absolute;
+  inset: 8px 7px 8px 9px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #2ecc71 55%, #bdc3c7 55%);
+  border: 2px solid #0b2a4a;
+}
+.lab-icon-battery::after {
+  content: "";
+  position: absolute;
+  right: 5px;
+  top: 12px;
+  width: 4px;
+  height: 10px;
+  background: #0b2a4a;
+  border-radius: 1px;
+}
+
+.lab-icon-resistor::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 15px;
+  height: 4px;
+  background: #0b2a4a;
+}
+.lab-icon-resistor::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 10px;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #c0392b 0 25%, #f1c40f 25% 50%, #e67e22 50% 75%, #f1c40f 75% 100%);
+}
+
+.lab-icon-led::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 6px;
+  height: 14px;
+  border-radius: 8px 8px 4px 4px;
+  background: #e74c3c;
+}
+.lab-icon-led::after {
+  content: "";
+  position: absolute;
+  left: 13px;
+  width: 3px;
+  height: 10px;
+  bottom: 5px;
+  background: #95a5a6;
+  box-shadow: 5px 2px 0 #95a5a6;
+}
+.lab-icon-led.is-rev::before {
+  background: #7f8c8d;
+}
+
+.lab-icon-lcd::before {
+  content: "";
+  position: absolute;
+  inset: 8px 6px;
+  border-radius: 3px;
+  background: #0b3d2e;
+  border: 2px solid #0b2a4a;
+  box-shadow: inset 0 0 0 1px #1a6b4f;
+}
+.lab-icon-lcd::after {
+  content: "LCD";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 12px;
+  text-align: center;
+  font-size: 7px;
+  font-weight: 800;
+  color: #7dffa8;
+  font-family: ui-monospace, monospace;
+}
+
+.lab-program-col {
+  background: #0f2430;
+  color: #d7e8ef;
+  border-radius: var(--radius);
+  padding: 1rem 1.05rem 1.15rem;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: calc(var(--header-h) + 0.75rem);
+}
+
+.lab-program-col h3 {
+  color: #fff;
+  margin: 0 0 0.45rem;
+}
+
+.lab-program-help {
+  margin: 0 0 0.75rem;
+  font-size: 0.84rem;
+  color: rgba(215, 232, 239, 0.78);
+  line-height: 1.45;
+}
+
+.lab-program-help code {
+  display: inline-block;
+  margin-top: 0.2rem;
+  color: #9ef0c5;
+  font-size: 0.8rem;
+}
+
+.lab-program-editor {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  border-radius: 10px;
+  border: 1px solid rgba(158, 201, 255, 0.25);
+  background: #071821;
+  color: #b8f5d1;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  padding: 0.75rem 0.85rem;
+  margin-bottom: 0.65rem;
+}
+
+.lab-program-editor:focus {
+  outline: 2px solid rgba(31, 111, 235, 0.45);
+  border-color: #1f6feb;
+}
+
+.lab-program-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.lab-program-actions .btn-primary {
+  min-width: 96px;
+}
+
+.lab-program-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+.lab-program-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.lab-program-tip {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: #9ec9ff;
+  line-height: 1.4;
+}
+
+.lab-program-tip strong { color: #fff; }
+
+.lcd-heading { margin-top: 0.5rem; }
+
+.lcd-panel { margin-top: 0.35rem; }
+
+.lcd-bezel {
+  background: #1b2430;
+  border-radius: 12px;
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lcd-screen {
+  min-height: 64px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #0d5c45 0%, #0a3f31 100%);
+  border: 2px solid #06281f;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  padding: 0.55rem 0.75rem;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  color: #7dffa8;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lcd-line {
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: clip;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 700;
+  min-height: 1.2em;
+}
+
+.lcd-screen.is-active {
+  box-shadow: inset 0 0 18px rgba(125, 255, 168, 0.18), 0 0 12px rgba(125, 255, 168, 0.15);
+}
+
+.lcd-caption {
+  margin: 0.55rem 0 0;
+  font-size: 0.8rem;
+  color: rgba(215, 232, 239, 0.65);
+}
+
+.lcd-caption.is-error {
+  color: #ffb4a8;
+}
+
+.lcd-caption.is-ok {
+  color: #9ef0c5;
+}
+
+.lab-board-help {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.lab-board {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, rgba(31, 111, 235, 0.08), rgba(31, 111, 235, 0.02)),
+    repeating-linear-gradient(
+      0deg,
+      #f0f4fa,
+      #f0f4fa 12px,
+      #e7edf6 12px,
+      #e7edf6 24px
+    );
+  border: 2px dashed #9db7e0;
+  min-height: 120px;
+}
+
+.lab-slot {
+  width: min(150px, 100%);
+  min-height: 88px;
+  border-radius: 12px;
+  border: 2px solid #8aa8d8;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lab-slot.drag-over {
+  border-color: var(--blue);
+  background: #e8f1ff;
+  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.2);
+}
+
+.lab-slot.filled {
+  border-style: solid;
+  cursor: pointer;
+}
+
+.lab-slot-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lab-slot-part {
+  font-weight: 700;
+  font-size: 0.86rem;
+  text-align: center;
+  color: var(--navy);
+}
+
+.lab-wire {
+  width: 28px;
+  height: 4px;
+  border-radius: 999px;
+  background: #0b2a4a;
+  flex-shrink: 0;
+}
+
+.lab-led-stage {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-weight: 650;
+}
+
+.lab-led-bulb {
+  width: 42px;
+  height: 42px;
+  border-radius: 50% 50% 42% 42%;
+  background: #b0bec5;
+  border: 3px solid #607d8b;
+  box-shadow: inset 0 -8px 12px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.lab-led-bulb.is-on {
+  background: #ff5252;
+  border-color: #c62828;
+  box-shadow: 0 0 18px rgba(255, 82, 82, 0.85), inset 0 -6px 10px rgba(255, 255, 255, 0.25);
+}
+
+.lab-led-bulb.is-blink {
+  animation: ledBlink 0.55s ease-in-out 5;
+}
+
+@keyframes ledBlink {
+  0%, 100% {
+    background: #b0bec5;
+    border-color: #607d8b;
+    box-shadow: inset 0 -8px 12px rgba(0, 0, 0, 0.15);
+  }
+  40%, 60% {
+    background: #ff5252;
+    border-color: #c62828;
+    box-shadow: 0 0 22px rgba(255, 82, 82, 0.95), inset 0 -6px 10px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.lab-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.15rem;
+}
+
+.lab-result {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  font-weight: 650;
+}
+
+.lab-result.ok {
+  background: #ecfdf3;
+  border-color: #abefc6;
+  color: #067647;
+}
+
+.lab-result.err {
+  background: #fef3f2;
+  border-color: #fecdca;
+  color: #b42318;
+}
+
+@media (max-width: 1100px) {
+  .lab-workspace { grid-template-columns: 1fr; }
+  .lab-program-col { position: static; }
+}
+
+@media (max-width: 900px) {
+  .lab-layout { grid-template-columns: 1fr; }
+  .lab-sidebar { position: static; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-led-bulb.is-blink { animation: none; }
+  .lab-led-bulb.is-blink,
+  .lab-led-bulb.is-on {
+    background: #ff5252;
+    border-color: #c62828;
+  }
+}

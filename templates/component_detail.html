@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% from "macros.html" import component_image %}
+
+{% block title %}{{ component.name }}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <p class="breadcrumb">
+      <a href="{{ url_for('components') }}">Catalog</a>
+      <span>/</span>
+      <a href="{{ url_for('components', category=component.category) }}">{{ component.category }}</a>
+      <span>/</span>
+      <span>{{ component.part_number }}</span>
+    </p>
+    <div class="detail-hero">
+      <div class="detail-hero-copy">
+        <span class="badge">{{ component.category }}</span>
+        <h1>{{ component.name }}</h1>
+        <p class="detail-sub">{{ component.part_number }} · {{ component.manufacturer }} · {{ component.component_type }}</p>
+      </div>
+      <div class="detail-hero-media">
+        {{ component_image(component.image_file, component.name) }}
+      </div>
+    </div>
+    <div class="detail-actions">
+      <label class="compare-check compare-check-lg">
+        <input type="checkbox" data-compare-toggle value="{{ component.id }}" data-name="{{ component.name }}">
+        <span>Add to compare</span>
+      </label>
+      <a class="btn btn-secondary" href="{{ url_for('components', category=component.category) }}">More {{ component.category }}s</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container detail-layout">
+    <article class="detail-main">
+      <h2>Overview</h2>
+      <p>{{ component.description }}</p>
+
+      <h2>Key specifications</h2>
+      <ul class="spec-list detail-spec-list">
+        {% for spec in component.key_spec_list %}
+          <li><span>{{ spec.label }}</span><strong>{{ spec.value }}</strong></li>
+        {% endfor %}
+      </ul>
+
+      <h2>Full specifications</h2>
+      <pre class="spec-block">{{ component.specifications }}</pre>
+
+      {% if component.suggestion %}
+        <div class="suggestion-box">
+          <h2>Real-world suggestion</h2>
+          <p>{{ component.suggestion }}</p>
+        </div>
+      {% endif %}
+
+      <div class="info-grid">
+        <div>
+          <h2>Applications</h2>
+          <p>{{ component.applications }}</p>
+        </div>
+        <div>
+          <h2>Common uses</h2>
+          <p>{{ component.common_uses }}</p>
+        </div>
+        <div>
+          <h2>Advantages</h2>
+          <p>{{ component.advantages }}</p>
+        </div>
+        <div>
+          <h2>Disadvantages</h2>
+          <p>{{ component.disadvantages }}</p>
+        </div>
+      </div>
+    </article>
+
+    <aside class="detail-side">
+      <div class="side-panel">
+        <h3>Quick facts</h3>
+        <dl class="fact-list">
+          <div><dt>Category</dt><dd>{{ component.category }}</dd></div>
+          <div><dt>Type</dt><dd>{{ component.component_type }}</dd></div>
+          <div><dt>Part number</dt><dd>{{ component.part_number }}</dd></div>
+          <div><dt>Manufacturer</dt><dd>{{ component.manufacturer }}</dd></div>
+          <div><dt>Catalog ID</dt><dd>#{{ component.id }}</dd></div>
+        </dl>
+      </div>
+    </aside>
+  </div>
+</section>
+
+{% if related %}
+<section class="section section-muted">
+  <div class="container">
+    <div class="section-head">
+      <h2>Related {{ component.category }}s</h2>
+      <p>Other parts in the same category from the sample catalog.</p>
+    </div>
+    <div class="card-grid">
+      {% for c in related %}
+        <article class="component-card" data-component-id="{{ c.id }}">
+          <div class="card-media">
+            {{ component_image(c.image_file, c.name) }}
+          </div>
+          <div class="card-top">
+            <span class="badge">{{ c.category }}</span>
+            <label class="compare-check">
+              <input type="checkbox" data-compare-toggle value="{{ c.id }}" data-name="{{ c.name }}">
+              <span>Compare</span>
+            </label>
+          </div>
+          <h3><a href="{{ url_for('component_detail', component_id=c.id) }}">{{ c.name }}</a></h3>
+          <a class="btn btn-small" href="{{ url_for('component_detail', component_id=c.id) }}">View</a>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% from "macros.html" import component_image %}
+
+{% block title %}Compare{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Compare components</h1>
+    <p>Place two or three parts side by side with images, key specs, and a full comparison table.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if error and not components %}
+      <div class="empty-state">
+        <h3>Nothing to compare yet</h3>
+        <p>{{ error }} Use the Compare checkboxes in the catalog, or pick parts below.</p>
+        <a class="btn btn-primary" href="{{ url_for('components') }}">Browse catalog</a>
+      </div>
+    {% endif %}
+
+    {% if components %}
+      <div class="compare-summary">
+        <p>Comparing <strong>{{ components|length }}</strong> components</p>
+        <a class="btn btn-ghost" href="{{ url_for('components') }}">Change selection</a>
+      </div>
+
+      <div class="compare-cards">
+        {% for c in components %}
+          <article class="spec-card">
+            <div class="spec-card-media">
+              {{ component_image(c.image_file, c.name) }}
+            </div>
+            <h3><a href="{{ url_for('component_detail', component_id=c.id) }}">{{ c.name }}</a></h3>
+            <p class="card-meta">{{ c.category }} · {{ c.part_number }}</p>
+            <ul class="spec-list">
+              {% for spec in c.key_spec_list %}
+                <li><span>{{ spec.label }}</span><strong>{{ spec.value }}</strong></li>
+              {% endfor %}
+            </ul>
+            {% if c.suggestion %}
+              <p class="card-suggestion"><strong>Suggestion:</strong> {{ c.suggestion }}</p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+
+      <h2 class="table-heading">Full comparison table</h2>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th scope="col">Attribute</th>
+              {% for c in components %}
+                <th scope="col">
+                  <a href="{{ url_for('component_detail', component_id=c.id) }}">{{ c.name }}</a>
+                </th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for label, field in compare_fields %}
+              <tr>
+                <th scope="row">{{ label }}</th>
+                {% for c in components %}
+                  <td>
+                    {% if field == 'specifications' %}
+                      <pre class="cell-pre">{{ c[field] }}</pre>
+                    {% else %}
+                      {{ c[field] }}
+                    {% endif %}
+                  </td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+    <div class="compare-picker section-spaced" data-compare-picker>
+      <h2>Build a comparison</h2>
+      <p>Select 2–{{ max_compare }} components, then generate the cards and table.</p>
+      <form class="picker-form" method="get" action="{{ url_for('compare') }}" data-picker-form>
+        <div class="picker-grid" data-picker-grid></div>
+        <input type="hidden" name="ids" value="{{ selected_ids|join(',') }}" data-picker-ids>
+        <div class="picker-actions">
+          <button type="submit" class="btn btn-primary" data-picker-submit>Compare selected</button>
+          <span class="form-hint" data-picker-hint>Select at least 2 components.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

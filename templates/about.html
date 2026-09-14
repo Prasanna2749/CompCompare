@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>About CompCompare</h1>
+    <p>A simple academic tool to find, study, and compare electronic components.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container about-grid">
+    <article>
+      <h2>What it does</h2>
+      <p>
+        CompCompare stores a curated SQLite catalog of resistors, capacitors, diodes, LEDs,
+        transistors, inductors, and ICs. You can search by name or part number, filter by
+        category, sort results, open detailed pages, and compare two or three parts side by side.
+      </p>
+    </article>
+    <article>
+      <h2>Who it helps</h2>
+      <p>
+        Built for ECE students, junior engineers, and hobbyists who need a fast way to recall
+        key ratings and choose a sensible part before soldering or simulating a circuit.
+      </p>
+    </article>
+    <article>
+      <h2>Real-world suggestions</h2>
+      <p>
+        Each component includes a practical selection tip — for example, which resistor to pair
+        with a 5 V LED, or when to prefer a MOSFET over a BJT for higher current loads.
+      </p>
+    </article>
+  </div>
+  <div class="container center-actions">
+    <a class="btn btn-primary" href="{{ url_for('components') }}">Browse catalog</a>
+    <a class="btn btn-secondary" href="{{ url_for('compare') }}">Start comparing</a>
+  </div>
+</section>
+{% endblock %}

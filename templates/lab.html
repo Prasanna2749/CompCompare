@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Circuit Lab{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lab.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-compact">
+  <div class="container">
+    <h1>Circuit Lab</h1>
+    <p>
+      Drag Battery / Resistor / LED / LCD into the series strip.
+      For LCD tasks, write a small command on the right, then click <strong>Run</strong>.
+    </p>
+  </div>
+</section>
+
+<section class="section lab-section">
+  <div class="container lab-layout" data-lab
+       data-active-problem="{{ active_problem.id }}"
+       data-slots="{{ active_problem.slots }}"
+       data-mode="{{ active_problem.mode }}">
+    <aside class="lab-sidebar">
+      <h2>Problems</h2>
+      <p class="lab-side-note">For LCD text, choose problem <strong>5</strong></p>
+      <ul class="lab-problem-list">
+        {% for p in lab_problems %}
+          <li>
+            <button
+              type="button"
+              class="lab-problem-btn {% if p.id == active_problem.id %}active{% endif %}"
+              data-problem-id="{{ p.id }}"
+              data-slots="{{ p.slots }}"
+              data-title="{{ p.title }}"
+              data-goal="{{ p.goal }}"
+              data-hint="{{ p.hint }}"
+              data-mode="{{ p.mode }}"
+              data-sample-program="{{ p.sample_program or '' }}"
+              data-palette="{{ p.palette|join(',') }}"
+            >
+              <span class="lab-problem-num">{% if p.number %}{{ p.number }}{% else %}C{% endif %}</span>
+              <span>
+                <strong>{{ p.title }}</strong>
+                <small>{{ p.goal }}</small>
+              </span>
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+
+    <div class="lab-workspace">
+      <div class="lab-main">
+        <div class="lab-brief">
+          <h2 data-lab-title>{{ active_problem.title }}</h2>
+          <p data-lab-goal>{{ active_problem.goal }}</p>
+          <p class="lab-hint"><strong>Hint:</strong> <span data-lab-hint>{{ active_problem.hint }}</span></p>
+        </div>
+
+        <div class="lab-palette-wrap">
+          <h3>Parts (drag to slots)</h3>
+          <div class="lab-palette" data-lab-palette>
+            {% for part in lab_parts %}
+              <div
+                class="lab-part"
+                draggable="true"
+                data-part-id="{{ part.id }}"
+                data-part-name="{{ part.name }}"
+                title="{{ part.hint }}"
+              >
+                <span class="lab-part-icon lab-icon-{{ part.icon }}{% if part.id == 'led_rev' %} is-rev{% endif %}" aria-hidden="true"></span>
+                <span>{{ part.name }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="lab-board-wrap">
+          <h3>Series circuit strip</h3>
+          <p class="lab-board-help">Drop parts left → right. Click a filled slot to remove it.</p>
+          <div class="lab-board" data-lab-board aria-label="Circuit slots"></div>
+          <div class="lab-led-stage" aria-hidden="true">
+            <div class="lab-led-bulb" data-lab-led></div>
+            <span>LED output</span>
+          </div>
+        </div>
+
+        <div class="lab-actions">
+          <button type="button" class="btn btn-primary" data-lab-run>Run</button>
+          <button type="button" class="btn btn-secondary" data-lab-clear>Clear strip</button>
+        </div>
+
+        <div class="lab-result" data-lab-result hidden role="status"></div>
+      </div>
+
+      <aside class="lab-program-col">
+        <h3>Program</h3>
+        <p class="lab-program-help">
+          Tiny Python-style commands only:<br>
+          <code>lcd.print("Hello")</code><br>
+          <code>lcd.clear()</code>
+        </p>
+        <label class="sr-only" for="lab-program">LCD program</label>
+        <textarea
+          id="lab-program"
+          class="lab-program-editor"
+          data-lab-program
+          rows="8"
+          maxlength="500"
+          spellcheck="false"
+          placeholder='lcd.print("Hello ECE")'
+        >{{ active_problem.sample_program or 'lcd.print("Hello ECE")' }}</textarea>
+        <div class="lab-program-actions">
+          <button type="button" class="btn btn-primary" data-lab-run-program>Run</button>
+          <button type="button" class="btn btn-secondary" data-lab-load-sample>Load sample</button>
+        </div>
+        <p class="lab-program-tip">
+          Select <strong>5. Hello on LCD</strong> on the left, wire
+          <strong>Battery → Resistor → LCD</strong>, then press <strong>Run</strong>.
+        </p>
+
+        <h3 class="lcd-heading">LCD display</h3>
+        <div class="lcd-panel" aria-live="polite">
+          <div class="lcd-bezel">
+            <div class="lcd-screen" data-lab-lcd>
+              <span class="lcd-line" data-lab-lcd-text></span>
+            </div>
+          </div>
+          <p class="lcd-caption" data-lab-lcd-status>Message appears here after a successful Run</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/lab.js') }}" defer></script>
+{% endblock %}

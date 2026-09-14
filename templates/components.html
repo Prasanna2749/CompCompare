@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% from "macros.html" import component_image %}
+
+{% block title %}Catalog{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Component catalog</h1>
+    <p>Search, filter by category, and sort. Tick Compare on 2–3 parts to build a side-by-side view.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="toolbar" method="get" action="{{ url_for('components') }}" data-filter-form id="filter-form">
+      <div class="search-field">
+        <label class="sr-only" for="search-q">Search components</label>
+        <input
+          id="search-q"
+          type="search"
+          name="q"
+          value="{{ search_query }}"
+          placeholder="Search name, part number, manufacturer…"
+          maxlength="100"
+          autocomplete="off"
+          data-search-input
+        >
+      </div>
+      <div class="filter-field">
+        <label class="sr-only" for="category">Category</label>
+        <select id="category" name="category" data-category-select>
+          <option value="all" {% if active_category == 'all' %}selected{% endif %}>All categories</option>
+          {% for cat in categories %}
+            <option value="{{ cat }}" {% if active_category == cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="filter-field">
+        <label class="sr-only" for="sort">Sort</label>
+        <select id="sort" name="sort" data-sort-select>
+          {% for key, meta in sort_options.items() %}
+            <option value="{{ key }}" {% if active_sort == key %}selected{% endif %}>{{ meta[1] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+
+    <div class="chip-row" role="list">
+      <a class="chip {% if active_category == 'all' %}active{% endif %}" href="{{ url_for('components', q=search_query, sort=active_sort) }}" role="listitem">All</a>
+      {% for cat in categories %}
+        <a class="chip {% if active_category == cat %}active{% endif %}" href="{{ url_for('components', category=cat, q=search_query, sort=active_sort) }}" role="listitem">{{ cat }}</a>
+      {% endfor %}
+    </div>
+
+    <div class="results-meta">
+      <p><strong data-result-count>{{ result_count }}</strong> result{{ 's' if result_count != 1 else '' }}
+        {% if search_query %} for “{{ search_query }}”{% endif %}
+        {% if active_category != 'all' %} in {{ active_category }}{% endif %}
+      </p>
+    </div>
+
+    <div class="card-grid" data-component-grid>
+      {% if components %}
+        {% for c in components %}
+          <article class="component-card" data-component-id="{{ c.id }}">
+            <div class="card-media">
+              {{ component_image(c.image_file, c.name) }}
+            </div>
+            <div class="card-top">
+              <span class="badge">{{ c.category }}</span>
+              <label class="compare-check">
+                <input type="checkbox" data-compare-toggle value="{{ c.id }}" data-name="{{ c.name }}">
+                <span>Compare</span>
+              </label>
+            </div>
+            <h3><a href="{{ url_for('component_detail', component_id=c.id) }}">{{ c.name }}</a></h3>
+            <p class="card-meta">{{ c.part_number }} · {{ c.manufacturer }}</p>
+            <ul class="mini-specs">
+              {% for spec in c.key_spec_list[:3] %}
+                <li><span>{{ spec.label }}</span> {{ spec.value }}</li>
+              {% endfor %}
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-small" href="{{ url_for('component_detail', component_id=c.id) }}">Details</a>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state" data-empty-state>
+          <h3>No components found</h3>
+          <p>Try a different search term or clear the category filter.</p>
+          <a class="btn btn-secondary" href="{{ url_for('components') }}">Reset filters</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="Inductor">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e8f1ff"/>
+      <stop offset="100%" stop-color="#d5e4f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="200" rx="16" fill="url(#bg)"/>
+  <path d="M40 108c18-46 36-46 54 0s36 46 54 0 36-46 54 0 36 46 54 0 36-46 54 0" fill="none" stroke="#0b2a4a" stroke-width="10" stroke-linecap="round"/>
+  <line x1="24" y1="108" x2="40" y2="108" stroke="#0b2a4a" stroke-width="8" stroke-linecap="round"/>
+  <line x1="280" y1="108" x2="296" y2="108" stroke="#0b2a4a" stroke-width="8" stroke-linecap="round"/>
+  <text x="160" y="172" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#0b2a4a">Inductor</text>
+</svg>

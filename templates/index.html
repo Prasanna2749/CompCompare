@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% from "macros.html" import component_image, category_image %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="home-top">
+  <div class="container">
+    <div class="feature-strip">
+      <article>
+        <span class="feat-icon" aria-hidden="true">⌕</span>
+        <h2>Component Search</h2>
+        <p>Find any component quickly</p>
+      </article>
+      <article>
+        <span class="feat-icon" aria-hidden="true">▽</span>
+        <h2>Filter &amp; Sort</h2>
+        <p>By type, value, category, and more</p>
+      </article>
+      <article>
+        <span class="feat-icon" aria-hidden="true">⇄</span>
+        <h2>Side-by-Side Comparison</h2>
+        <p>Compare multiple components</p>
+      </article>
+      <article>
+        <span class="feat-icon" aria-hidden="true">💡</span>
+        <h2>Real-World Suggestions</h2>
+        <p>Best choice for your use case</p>
+      </article>
+      <article>
+        <span class="feat-icon" aria-hidden="true">☰</span>
+        <h2>Detailed Information</h2>
+        <p>Specs, ratings, applications</p>
+      </article>
+      <article>
+        <span class="feat-icon" aria-hidden="true">▣</span>
+        <h2>Responsive Design</h2>
+        <p>Works on all devices</p>
+      </article>
+    </div>
+
+    <div class="home-hero-panel">
+      <p class="eyebrow">Electronic Component Comparison</p>
+      <h1>CompCompare</h1>
+      <p class="hero-lead">Search the catalog, filter by category, and compare parts side by side before you build.</p>
+
+      <form class="hero-search" method="get" action="{{ url_for('components') }}" role="search">
+        <label class="sr-only" for="home-search">Search components</label>
+        <input
+          id="home-search"
+          type="search"
+          name="q"
+          placeholder="Search component (e.g. resistor, capacitor, diode...)"
+          maxlength="100"
+          required
+        >
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+
+      <div class="category-icons" aria-label="Component categories">
+        {% for cat in home_categories %}
+          <a class="category-icon-link" href="{{ url_for('components', category=cat) }}">
+            <span class="cat-thumb">
+              {{ category_image(cat) }}
+            </span>
+            <span>{{ cat }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <h2>Compare Components</h2>
+      <p>Example side-by-side cards — open any part for full details, or build your own comparison.</p>
+    </div>
+
+    <div class="compare-cards">
+      {% for c in showcase %}
+        <article class="spec-card">
+          <div class="spec-card-media">
+            {{ component_image(c.image_file, c.name) }}
+          </div>
+          <h3>{{ c.category }}</h3>
+          <ul class="spec-list">
+            {% for spec in c.key_spec_list %}
+              <li><span>{{ spec.label }}</span><strong>{{ spec.value }}</strong></li>
+            {% endfor %}
+          </ul>
+          <div class="spec-card-actions">
+            <label class="compare-check">
+              <input type="checkbox" data-compare-toggle value="{{ c.id }}" data-name="{{ c.name }}">
+              <span>Compare</span>
+            </label>
+            <a class="btn btn-small" href="{{ url_for('component_detail', component_id=c.id) }}">Details</a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    <div class="center-actions">
+      <a class="btn btn-primary" href="{{ url_for('compare', ids=showcase|map(attribute='id')|join(',')) }}">Open this comparison</a>
+      <a class="btn btn-secondary" href="{{ url_for('components') }}">Browse full catalog</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

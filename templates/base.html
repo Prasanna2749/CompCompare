@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CompCompare{% endblock %} | Electronic Component Comparison</title>
+  <meta name="description" content="Find, filter, and compare electronic components for ECE students, engineers, and hobbyists.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="28" height="28"><rect x="6" y="8" width="20" height="16" rx="3" fill="currentColor"/><rect x="10" y="12" width="12" height="5" rx="1" fill="#7ec8ff"/><line x1="11" y1="8" x2="11" y2="4" stroke="#9ec9ff" stroke-width="2"/><line x1="16" y1="8" x2="16" y2="4" stroke="#9ec9ff" stroke-width="2"/><line x1="21" y1="8" x2="21" y2="4" stroke="#9ec9ff" stroke-width="2"/><line x1="11" y1="24" x2="11" y2="28" stroke="#9ec9ff" stroke-width="2"/><line x1="16" y1="24" x2="16" y2="28" stroke="#9ec9ff" stroke-width="2"/><line x1="21" y1="24" x2="21" y2="28" stroke="#9ec9ff" stroke-width="2"/></svg>
+        </span>
+        <strong>CompCompare</strong>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+        <span class="sr-only">Menu</span>
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" data-site-nav>
+        <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('lab') }}" class="{% if request.endpoint == 'lab' %}active{% endif %}">Lab</a>
+        <a href="{{ url_for('compare') }}" class="{% if request.endpoint == 'compare' %}active{% endif %}">Compare</a>
+        <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a>
+        <a href="{{ url_for('components') }}" class="{% if request.endpoint in ['components', 'component_detail'] %}active{% endif %}">Catalog</a>
+      </nav>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap container" role="status">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="compare-tray" id="compare-tray" hidden data-compare-tray>
+    <div class="container compare-tray-inner">
+      <div class="compare-tray-info">
+        <strong>Comparison selection</strong>
+        <span data-compare-count>0 selected</span>
+        <span class="compare-tray-hint">Choose 2–{{ max_compare }} components</span>
+      </div>
+      <div class="compare-tray-chips" data-compare-chips></div>
+      <div class="compare-tray-actions">
+        <button type="button" class="btn btn-ghost" data-compare-clear>Clear</button>
+        <button type="button" class="btn btn-primary" data-compare-go>Compare now</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container value-bar">
+      <div class="value-item">
+        <span class="value-icon" aria-hidden="true">⌕</span>
+        <div>
+          <strong>Easy to Find and Compare</strong>
+          <p>Search, filter, and place parts side by side.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <span class="value-icon" aria-hidden="true">✓</span>
+        <div>
+          <strong>Helps In Better Component Selection</strong>
+          <p>Specs, trade-offs, and real-world suggestions.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <span class="value-icon" aria-hidden="true">S</span>
+        <div>
+          <strong>Useful for Students, Engineers & Hobbyists</strong>
+          <p>Built for ECE labs and maker projects.</p>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 CompCompare — Electronic Component Comparison Web Application</p>
+      <p><a href="{{ url_for('about') }}">About</a> · <a href="{{ url_for('lab') }}">Lab</a> · <a href="{{ url_for('components') }}">Catalog</a> · <a href="{{ url_for('compare') }}">Compare</a></p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

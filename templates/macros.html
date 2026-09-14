@@ -1,0 +1,24 @@
+{# Shared image helper — always points at a real static SVG #}
+{% macro component_image(image_file, alt='', css_class='component-photo') -%}
+<img
+  class="{{ css_class }}"
+  src="{{ url_for('static', filename=image_file or 'img/ic.svg') }}"
+  alt="{{ alt }}"
+  loading="eager"
+  decoding="async"
+  onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/ic.svg') }}';"
+>
+{%- endmacro %}
+
+{% macro category_image(category) -%}
+{% set slug = category|lower %}
+<img
+  class="component-photo"
+  src="{{ url_for('static', filename='img/' + slug + '.svg') }}"
+  alt="{{ category }}"
+  width="160"
+  height="110"
+  loading="eager"
+  onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/ic.svg') }}';"
+>
+{%- endmacro %}
