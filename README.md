@@ -50,11 +50,9 @@ These steps assume **no prior knowledge** of the project. Run all commands from 
 **Option A: Clone from GitHub**
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/rajshreelakshmi49-sketch/CompCompare.git
+cd CompCompare
 ```
-
-Replace `YOUR_GITHUB_USERNAME` and `YOUR_REPO_NAME` with the actual repository values.
 
 **Option B: If you already have the folder**
 
@@ -195,8 +193,8 @@ For LED problems (1–4), use **Battery → Resistor → LED (forward)** and cli
 Evaluators typically require:
 
 1. Repository visibility set to **Public**  
-2. Root URL only, for example:  
-   `https://github.com/{github-username}/{repo-name}`  
+2. Root URL only:  
+   `https://github.com/rajshreelakshmi49-sketch/CompCompare`  
 3. Do **not** submit tree/blob URLs such as `/tree/main/` or `/blob/`  
 4. This `README.md` must remain at the **repository root**
 
@@ -210,8 +208,8 @@ This Flask app can be hosted on [Render](https://render.com) to get a public URL
 
 1. Create a **public** GitHub repository  
 2. Push this project to `main`  
-3. Keep the repository root URL like:  
-   `https://github.com/{github-username}/{repo-name}`
+3. Keep the repository root URL as:  
+   `https://github.com/rajshreelakshmi49-sketch/CompCompare`
 
 ### B. Create a Render Web Service
 
