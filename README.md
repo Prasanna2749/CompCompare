@@ -100,3 +100,19 @@ Then open **http://127.0.0.1:5000**
 - No paid APIs or cloud services are required.
 - Deleting `components.db` and starting again recreates the sample catalog.
 - Keep the `start.bat` window open while using the website.
+
+---
+
+## Deploying online (important)
+
+### Netlify
+**CompCompare cannot run on Netlify as-is.**  
+Netlify hosts static websites (HTML/CSS/JS). This project is a **Python Flask** app with SQLite, so it needs a Python server.
+
+### Better free options for Flask
+Use one of these after you push to GitHub:
+- [Render](https://render.com) — Web Service, start command: `gunicorn app:app`
+- [Railway](https://railway.app)
+- [PythonAnywhere](https://www.pythonanywhere.com)
+
+For local/client demos, **`start.bat` is still the easiest method**.
