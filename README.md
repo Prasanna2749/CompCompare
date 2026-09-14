@@ -50,7 +50,7 @@ These steps assume **no prior knowledge** of the project. Run all commands from 
 **Option A: Clone from GitHub**
 
 ```bash
-git clone https://github.com/rajshreelakshmi49-sketch/CompCompare.git
+git clone https://github.com/Prasanna2749/CompCompare.git
 cd CompCompare
 ```
 
@@ -194,7 +194,7 @@ Evaluators typically require:
 
 1. Repository visibility set to **Public**  
 2. Root URL only:  
-   `https://github.com/rajshreelakshmi49-sketch/CompCompare`  
+   `https://github.com/Prasanna2749/CompCompare`  
 3. Do **not** submit tree/blob URLs such as `/tree/main/` or `/blob/`  
 4. This `README.md` must remain at the **repository root**
 
@@ -209,7 +209,7 @@ This Flask app can be hosted on [Render](https://render.com) to get a public URL
 1. Create a **public** GitHub repository  
 2. Push this project to `main`  
 3. Keep the repository root URL as:  
-   `https://github.com/rajshreelakshmi49-sketch/CompCompare`
+   `https://github.com/Prasanna2749/CompCompare`
 
 ### B. Create a Render Web Service
 
