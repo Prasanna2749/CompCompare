@@ -164,7 +164,10 @@ For LED problems (1–4), use **Battery → Resistor → LED (forward)** and cli
 ├── app.py                 # Flask routes and server entry point
 ├── database.py            # SQLite schema, seed data, queries
 ├── lab_problems.py        # Circuit Lab problems and validation
-├── requirements.txt       # Python dependencies
+├── requirements.txt       # Python dependencies (includes gunicorn)
+├── Procfile               # Start command for Render / Heroku-style hosts
+├── runtime.txt            # Python version hint for hosting platforms
+├── render.yaml            # Optional Render Blueprint
 ├── start.bat              # Optional Windows one-click start
 ├── stop.bat               # Optional Windows stop helper
 ├── static/                # CSS, JavaScript, images
@@ -196,3 +199,50 @@ Evaluators typically require:
    `https://github.com/{github-username}/{repo-name}`  
 3. Do **not** submit tree/blob URLs such as `/tree/main/` or `/blob/`  
 4. This `README.md` must remain at the **repository root**
+
+---
+
+## Live demo on Render (optional)
+
+This Flask app can be hosted on [Render](https://render.com) to get a public URL.
+
+### A. Push the project to GitHub first
+
+1. Create a **public** GitHub repository  
+2. Push this project to `main`  
+3. Keep the repository root URL like:  
+   `https://github.com/{github-username}/{repo-name}`
+
+### B. Create a Render Web Service
+
+1. Sign up / log in at https://dashboard.render.com  
+2. Click **New +** → **Web Service**  
+3. Connect your GitHub account and select this repository  
+4. Use these settings:
+
+| Setting | Value |
+|---------|--------|
+| Runtime | Python 3 |
+| Build Command | `pip install -r requirements.txt` |
+| Start Command | `gunicorn app:app --bind 0.0.0.0:$PORT` |
+| Instance type | Free |
+
+5. Click **Create Web Service**  
+6. Wait for the first deploy to finish  
+7. Open the Render URL, for example:  
+   `https://your-service-name.onrender.com`
+
+### C. Notes about the free Render plan
+
+- The first visit after idle time may take ~30–60 seconds (cold start)  
+- SQLite data may reset when the free instance sleeps or redeploys  
+- Sample components are seeded again automatically on startup  
+
+### D. Local production-style check (optional)
+
+```bash
+pip install -r requirements.txt
+gunicorn app:app --bind 127.0.0.1:5000
+```
+
+Then open http://127.0.0.1:5000

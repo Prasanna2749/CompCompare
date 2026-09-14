@@ -5,6 +5,7 @@ Flask backend with SQLite storage, search, filtering, sorting, and compare.
 
 from __future__ import annotations
 
+import os
 import re
 from typing import Any
 
@@ -36,7 +37,7 @@ from database import (
 from lab_problems import get_lab_payload, get_lab_problem, validate_circuit
 
 app = Flask(__name__)
-app.secret_key = "ece-component-compare-dev-key"
+app.secret_key = os.environ.get("SECRET_KEY", "ece-component-compare-dev-key")
 
 MAX_COMPARE = 3
 MIN_COMPARE = 2
@@ -347,10 +348,16 @@ def server_error(error):
 
 
 def create_app() -> Flask:
+    """Application factory used by tests and WSGI servers."""
     init_db()
     return app
 
 
+# Ensure DB exists when loaded by gunicorn (Render) or `python app.py`
+init_db()
+
+
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True, host="127.0.0.1", port=5000)
+    port = int(os.environ.get("PORT", "5000"))
+    debug = os.environ.get("FLASK_DEBUG", "1") == "1"
+    app.run(host="0.0.0.0", port=port, debug=debug)
