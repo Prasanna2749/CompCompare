@@ -1,76 +1,158 @@
-# CompCompare — Electronic Component Comparison Web Application
+# Electronic Component Comparison Web Application (CompCompare)
 
-A simple Flask web app to search, compare, and study electronic components, plus a Circuit Lab for practice.
+CompCompare is a web application for browsing, searching, and comparing electronic components (resistors, capacitors, diodes, LEDs, transistors, inductors, and ICs). It also includes a Circuit Lab where users can drag components into a series strip and run simple validation problems (including an LCD `lcd.print` demo).
 
----
-
-## Quick start (Windows) — easiest way
-
-### 1. Install Python
-- Install **Python 3.10 or newer** from [python.org/downloads](https://www.python.org/downloads/)
-- During install, check **“Add python.exe to PATH”**
-
-### 2. Start the app
-1. Open the project folder (wherever you saved it)
-2. Double-click **`start.bat`**
-3. Wait until you see the server start message
-4. Open a browser and go to: **http://127.0.0.1:5000**
-
-That’s it.  
-`start.bat` will automatically:
-- create a virtual environment (`.venv`) if needed  
-- install dependencies from `requirements.txt`  
-- create the SQLite database with sample data if it does not exist  
-- start the Flask server  
-
-### 3. Stop the app
-- Press **Ctrl+C** in the server window, **or**
-- Double-click **`stop.bat`**
+**Tech stack:** Python, Flask, SQLite, HTML, CSS, JavaScript  
+**Database:** SQLite (created and seeded automatically on first run)  
+**External services:** None required (no paid APIs)
 
 ---
 
-## Optional: run from Command Prompt / PowerShell
+## Prerequisites
 
-From inside the project folder:
+Install the following before setup:
 
-```bat
-start.bat
+1. **Python 3.10 or newer**  
+   - Download: https://www.python.org/downloads/  
+   - On Windows, enable **Add python.exe to PATH** during installation  
+2. **Git** (to clone the repository)  
+   - Download: https://git-scm.com/downloads  
+3. A modern web browser (Chrome, Edge, or Firefox)
+
+Verify Python from a terminal:
+
+```bash
+python --version
 ```
 
-Or manually:
+If `python` is not found, try:
+
+```bash
+py -3 --version
+```
+
+or:
+
+```bash
+python3 --version
+```
+
+Use whichever command works on your system in the steps below.
+
+---
+
+## How to set up and run (command line)
+
+These steps assume **no prior knowledge** of the project. Run all commands from a terminal (Command Prompt, PowerShell, or bash).
+
+### Step 1 — Get the project
+
+**Option A: Clone from GitHub**
+
+```bash
+git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git
+cd YOUR_REPO_NAME
+```
+
+Replace `YOUR_GITHUB_USERNAME` and `YOUR_REPO_NAME` with the actual repository values.
+
+**Option B: If you already have the folder**
+
+```bash
+cd path/to/Electronic-Component-Comparison-Web-Application
+```
+
+### Step 2 — Create a virtual environment
+
+**Windows (Command Prompt / PowerShell):**
 
 ```bat
 python -m venv .venv
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-.venv\Scripts\python.exe app.py
+.venv\Scripts\activate
 ```
 
-Then open **http://127.0.0.1:5000**
+**macOS / Linux:**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+When the virtual environment is active, your prompt usually shows `(.venv)`.
+
+### Step 3 — Install dependencies
+
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+This installs Flask and pytest from `requirements.txt`.
+
+### Step 4 — Configuration
+
+**No manual configuration is required.**
+
+- There is no `.env` file to create  
+- There are no API keys  
+- The SQLite database file `components.db` is **created automatically** the first time the app starts  
+- Sample component data is inserted automatically if the database is empty  
+
+### Step 5 — Run the application
+
+```bash
+python app.py
+```
+
+Expected result:
+
+- The Flask development server starts on **http://127.0.0.1:5000**
+- Open that URL in your browser
+
+Stop the server with **Ctrl+C** in the terminal.
+
+### Step 6 — (Optional) Run automated tests
+
+With the virtual environment still activated:
+
+```bash
+pytest -v
+```
 
 ---
 
-## Run tests (developers)
+## Windows convenience scripts (optional)
 
-```bat
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-.venv\Scripts\python.exe -m pytest -v
-```
+If you are on Windows, you may also use:
+
+- `start.bat` — creates `.venv` if needed, installs dependencies, starts the server  
+- `stop.bat` — stops a process listening on port 5000  
+
+These scripts are optional. Evaluators should prefer the **command-line steps** above.
 
 ---
 
-## What you can do in the app
+## Application overview
 
-1. **Home** — search and browse categories  
-2. **Catalog** — filter, sort, open component details  
-3. **Compare** — compare 2–3 components side by side  
-4. **Lab** — drag Battery / Resistor / LED / LCD and click Run  
-5. **About** — project overview  
+After opening http://127.0.0.1:5000:
 
-### Circuit Lab (LCD)
-1. Choose problem **5. Hello on LCD**
-2. Wire **Battery → Resistor → LCD**
-3. Type `lcd.print("Hello ECE")`
-4. Click **Run**
+| Page | Purpose |
+|------|---------|
+| **Home** | Search bar, category shortcuts, showcase comparison cards |
+| **Catalog** | Browse all components; filter by category; sort; open details |
+| **Compare** | Compare 2–3 components side by side (cards + table) |
+| **Lab** | Drag-and-drop series circuit practice problems |
+| **About** | Short project description |
+
+### Circuit Lab quick check
+
+1. Open **Lab**  
+2. Select problem **5. Hello on LCD**  
+3. Place **Battery → Resistor → LCD** in the series strip  
+4. In the Program panel enter: `lcd.print("Hello ECE")`  
+5. Click **Run** — the LCD panel should show the message  
+
+For LED problems (1–4), use **Battery → Resistor → LED (forward)** and click **Run**.
 
 ---
 
@@ -78,41 +160,39 @@ Then open **http://127.0.0.1:5000**
 
 ```text
 .
-├── start.bat              # Double-click to set up + run (Windows)
-├── stop.bat               # Stop the server on port 5000
-├── app.py                 # Flask application
-├── database.py            # SQLite setup + sample data
-├── lab_problems.py        # Circuit Lab problems
-├── components.db          # Auto-created on first run
-├── requirements.txt
-├── README.md
-├── static/
-├── templates/
-└── tests/
+├── README.md              # This file
+├── app.py                 # Flask routes and server entry point
+├── database.py            # SQLite schema, seed data, queries
+├── lab_problems.py        # Circuit Lab problems and validation
+├── requirements.txt       # Python dependencies
+├── start.bat              # Optional Windows one-click start
+├── stop.bat               # Optional Windows stop helper
+├── static/                # CSS, JavaScript, images
+├── templates/             # HTML templates
+└── tests/                 # pytest automated tests
 ```
 
----
-
-## Notes
-
-- Place this folder anywhere — `start.bat` / `stop.bat` use relative paths (no fixed user path).
-- `start.bat` also looks for Python under `%LOCALAPPDATA%\Programs\Python` if PATH is not set.
-- No paid APIs or cloud services are required.
-- Deleting `components.db` and starting again recreates the sample catalog.
-- Keep the `start.bat` window open while using the website.
+`components.db` appears after the first successful run (it is gitignored because it is regenerated automatically).
 
 ---
 
-## Deploying online (important)
+## Troubleshooting
 
-### Netlify
-**CompCompare cannot run on Netlify as-is.**  
-Netlify hosts static websites (HTML/CSS/JS). This project is a **Python Flask** app with SQLite, so it needs a Python server.
+| Problem | Fix |
+|---------|-----|
+| `python` not recognized | Reinstall Python and enable PATH, or use `py -3` / `python3` |
+| Port 5000 already in use | Stop the other process, or change the port in `app.py` |
+| Empty / missing database | Delete `components.db` (if present) and run `python app.py` again |
+| Module not found | Activate `.venv` and run `pip install -r requirements.txt` |
 
-### Better free options for Flask
-Use one of these after you push to GitHub:
-- [Render](https://render.com) — Web Service, start command: `gunicorn app:app`
-- [Railway](https://railway.app)
-- [PythonAnywhere](https://www.pythonanywhere.com)
+---
 
-For local/client demos, **`start.bat` is still the easiest method**.
+## GitHub submission notes (for authors)
+
+Evaluators typically require:
+
+1. Repository visibility set to **Public**  
+2. Root URL only, for example:  
+   `https://github.com/{github-username}/{repo-name}`  
+3. Do **not** submit tree/blob URLs such as `/tree/main/` or `/blob/`  
+4. This `README.md` must remain at the **repository root**
