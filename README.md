@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Electronic Component Comparison Web Application (CompCompare)
 
 CompCompare is a web application for browsing, searching, and comparing electronic components (resistors, capacitors, diodes, LEDs, transistors, inductors, and ICs). It also includes a Circuit Lab where users can drag components into a series strip and run simple validation problems (including an LCD `lcd.print` demo).
